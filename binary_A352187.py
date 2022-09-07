@@ -10,12 +10,8 @@ Created on Thu Aug 25 09:11:33 2022
 Compute A352200, the binary version of sequence A352187 and print the results
 as a human-readable table.
 '''
-
-
-
-import sys
 import bitlib as bl
-from tabulate import tabulate
+from print_table import compute_tbl_fmt
 
 
 
@@ -39,9 +35,7 @@ def EKWolley(input_n):
             continue
         
         ker_I = bl.ker_int(i)
-        
         cond_A = len(ker_I.intersection(ker_A)) > 0
-        
         cond_B = len(ker_I.intersection(ker_B)) == 0
         
         if ker_A.issubset(ker_B):
@@ -55,25 +49,11 @@ def EKWolley(input_n):
         i = i + 1
         
 
+N = 257
+output = compute_tbl_fmt(EKWolley, (1, N), "binary") 
+print(output)
+with open("./text_output/binary_A352187.txt","w") as fp:
+    fp.write(output)
 
-N = 250
-
-rows = []
-
-for i in range(0, N):
-    term = EKWolley(i)
-    fact_arr = bl.int_to_bit_arr(term)    
-    lbl1 = f"a({i:5}) = "
-    lbl2 = f"{term:5} = "
-    lbl1 = lbl1 + lbl2
-    fact_arr.insert(0, lbl1)
-    fact_arr = list(map(lambda x: " " if x == 0 else x, fact_arr))
-    rows.append(fact_arr)
     
-
-num_cols = max(list(map(lambda x: len(x), rows))) - 1
-print(num_cols)
-rows.insert(0, [" "] + [2**i for i in range(0, num_cols)])
-print(tabulate(rows))
-
     

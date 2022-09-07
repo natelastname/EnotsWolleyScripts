@@ -9,10 +9,8 @@ Created on Sat May 14 12:09:12 2022
     Computes the binary Enots Wolley sequence
 '''
 
-
-
 import bitlib as bl
-import re
+from print_table import compute_tbl_fmt
 
 cache = {1: 1, 2: 3}
 found = {1: True, 3: True}
@@ -47,13 +45,17 @@ def enots(n):
             return candidate
 
 
-N = 100
-for i in range(1, N+1):
-    term = enots(i)
-    S = bl.int_to_bit_str(term)
-    
-    S = re.sub(r'0', ' ', S)
 
-    lbl1 = f"a({i}) = "
-    lbl2 = f"= {term}"
-    print(f"{lbl1:>9}{S:<15}{lbl2}")
+
+
+N = 100
+
+output = compute_tbl_fmt(enots, (1, N), "binary") 
+print(output)
+with open("./text_output/binary_enots.txt","w") as fp:
+    fp.write(output)
+
+    
+    
+    
+

@@ -5,10 +5,8 @@ Created on Tue Aug 23 10:26:17 2022
 
 @author: nate
 """
-
-import sys
 import bitlib as bl
-from tabulate import tabulate
+from print_table import compute_tbl_fmt
 
 
 cache = {1: 1}
@@ -36,28 +34,16 @@ def binary_EKG(input_n):
             return i
         
         i = i + 1
-        
 
 
-N = 34
+N = 257
 
-rows = []
+output = compute_tbl_fmt(binary_EKG, (1, N), "binary") 
+print(output)
+with open("./text_output/binary_EKG.txt","w") as fp:
+    fp.write(output)
 
-for i in range(1, N):
-    term = binary_EKG(i)
-    fact_arr = bl.int_to_bit_arr(term)    
-    lbl1 = f"a({i}) = "
-    lbl2 = f"{term} = "
-    lbl1 = lbl1 + lbl2
-    fact_arr.insert(0, lbl1)
-    fact_arr = list(map(lambda x: " " if x == 0 else x, fact_arr))
-    rows.append(fact_arr)
     
-
-num_cols = max(list(map(lambda x: len(x), rows))) - 1
-print(num_cols)
-rows.insert(0, [" "] + [2**i for i in range(0, num_cols)])
-print(tabulate(rows))
 
     
     

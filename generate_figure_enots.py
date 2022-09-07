@@ -159,7 +159,6 @@ for i in range(0, len(to_print)):
     print(f"{term_label:>6}")
     
     
-    
     for j in range(0, len(to_print[i])):
         elt = to_print[i][j]
         if elt == "0":
@@ -191,7 +190,7 @@ pprint(tab+"\\end{scope}")
 
 pprint("\\end{tikzpicture}")
   
-with open('/home/nate/Documents/enots_wolley/enots.tikz', "w") as fp:
+with open('text_output/primefact_enots.tikz', "w") as fp:
     fp.write(printed)
 
 

@@ -6,7 +6,7 @@ Created on Mon Aug 22 12:01:33 2022
 @author: nate
 """
 
-import enots
+import binary_enots
 import bitlib as bl
 
 N = 34
@@ -29,7 +29,7 @@ for i in range(1, N+1):
 to_print = []
 
 for i in range(1, N+1):
-    term = enots.enots(i)
+    term = binary_enots.enots(i)
     S = [i] + bl.int_to_bit_arr(term)
     to_print.append(S)
     S = str(S)
@@ -103,7 +103,7 @@ pprint(tab+"\\end{scope}")
 
 pprint("\\end{tikzpicture}")
   
-with open('/home/nate/Documents/enots_wolley/binary_enots.tikz', "w") as fp:
+with open('./text_output/binary_enots.tikz', "w") as fp:
     fp.write(printed)
 
 

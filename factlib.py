@@ -35,16 +35,31 @@ def combine_with_pad(arr):
 
 
 G = primefac.primegen()
+# primes_cache[prime] = [the index of the given prime]
 primes_cache = {}
+# A list of the primes in order
 primes = []
 
 
-def get_primes():
-    global primes
+def first_n_primes(num_primes):    
+    global G, primes, primes_cache
+    if num_primes <= len(primes):
+        return primes[0:num_primes]
+    
+    num_to_gen = num_primes - len(primes)
+    
+    for i in range(0, num_to_gen):
+        new_prime = next(G)
+        primes_cache[new_prime] = i
+        primes.append(new_prime)
+    
+    print(num_primes)
+    print(primes)
+    
     return primes
 
 def find_prime_index(prime):
-    global G, primes_cache
+    global G, primes, primes_cache
 
     if not primefac.isprime(prime):
         raise Exception("Argument must be a prime.")
@@ -65,7 +80,6 @@ def find_prime_index(prime):
 
 
 def int_to_fact_arr(n):
-    global primes
     
     if n == 0:
         raise Exception("Can't factorize 0.")

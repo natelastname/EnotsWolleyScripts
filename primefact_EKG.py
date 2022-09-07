@@ -7,7 +7,6 @@ Created on Tue Aug 23 08:45:28 2022
 """
 
 import primefac as pf
-import sys
 import factlib as fl
 from tabulate import tabulate
 
@@ -43,29 +42,16 @@ def EKG(input_n):
         
 
 
-N = 34
 
-rows = []
+import sys
+from print_table import compute_tbl_fmt
 
-for i in range(1, N+1):
-    term = i
-    fact_arr = fl.int_to_fact_arr(term)    
-    lbl1 = f"a({i}) = "
-    lbl2 = f"{term} = "
-    lbl1 = lbl1 + lbl2
-    fact_arr.insert(0, lbl1)
-    fact_arr = list(map(lambda x: " " if x == 0 else x, fact_arr))
-    rows.append(fact_arr)
-    
-rows.insert(0, [" "] + fl.get_primes())
+N = 250
 
-print(tabulate(rows))
-sys.exit(0)
-    
-    
-    
-    
-
+output = compute_tbl_fmt(EKG, (1, N), "primefact") 
+print(output)
+with open("./text_output/primefact_EKG.txt","w") as fp:
+    fp.write(output)
 
 
 
