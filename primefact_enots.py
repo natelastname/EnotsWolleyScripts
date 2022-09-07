@@ -5,7 +5,6 @@ Created on Wed Sep  7 18:07:13 2022
 
 @author: nate
 """
-
 '''
     Generate a table of formatted terms of the Enots Wolley sequence (A336957)
 '''
