@@ -9,116 +9,18 @@ Created on Sat May 14 12:09:09 2022
     This is actually the Enots Wolley sequence, not the yellowstone sequence.
 
 '''
-import re 
-import math
-import primefac
-import functools
-import operator
-
-G = primefac.primegen()
-primes = [next(G) for i in range(0,100)]
-
-def factor(n):
-    factors_dict = {}
-    factors = [x for x in primefac.primefac(n)]
-    for fact in factors:
-        if fact in factors_dict:
-            factors_dict[fact] = factors_dict[fact] + 1 
-            continue
-        factors_dict[fact] = 1
-        
-    return factors_dict
-    
-
-def kernel(n):
-    factors = [x for x in primefac.primefac(n)]
-    return set(factors)
-
-def combine_with_pad(arr):
-    S = ""
-    for i in arr:
-        S = S + f"{i:>2}"
-    return S
-
-def int_to_fact_arr(n):
-    global primes
-    fact = factor(n)
-    
-    as_arr = [0]*len(primes)
-    last_ind = 0
-    for x in fact.keys():
-        ind = primes.index(x)
-        last_ind = max(last_ind, ind)
-        as_arr[ind] = fact[x]
-    
-    return as_arr[0:last_ind+1]
-    
-def int_to_fact_string(n):
-    as_arr = int_to_fact_arr(n)
-    for i in range(0, len(as_arr)):
-        if as_arr[i] == 0:
-            as_arr[i] = "x"
-    S = combine_with_pad(as_arr)    
-    S = re.sub(r'x', ' ', S)
-
-    return S
-
-
-cache = {1: 1, 2: 2, 3: 6}
-found = {1: True, 2: True, 6: True}
-
-
-def yellowstone(n):    
-    global cache, found
-    if n in cache:
-        return cache[n]
-    
-    A = yellowstone(n-1)
-    B = yellowstone(n-2)
-    ker_A = kernel(A)
-    ker_B = kernel(B)
-    
-    candidate = 1
-    while True:
-        candidate = candidate + 1
-
-        if candidate in found:
-            continue
-
-        ker_C = kernel(candidate)
-        
-        prop1 = len(ker_C.intersection(ker_A)) > 0
-        prop2 = len(ker_C.intersection(ker_B)) == 0
-        prop3 = len(ker_C - ker_A) > 0
-        
-        if prop1 and prop2 and prop3:
-            cache[n] = candidate
-            found[candidate] = True
-            return candidate
-
+from primefact_enots import primefact_enots
+import factlib as fl
 
 N = 34
-'''
-trunc_primes = primes[0:14]
-hack = functools.reduce(lambda x,y: str(x)+f"{str(y):>4}", trunc_primes, 1)
-lbl = "            "
-#print(f"{lbl:>8}{hack}")
-for i in range(1, N+1):
-    term = yellowstone(i)
-    S = int_to_fact_string(term)
-    
-    lbl1 = f"a({i}) = "
-    lbl2 = f"= {term}"
-    print(f"{lbl1:>9}{S:<32}{lbl2}")
-'''
 
 
 
 to_print = []
 
 for i in range(1, N+1):
-    term = yellowstone(i)
-    S = [i] + int_to_fact_arr(term)
+    term = primefact_enots(i)
+    S = [i] + fl.int_to_fact_arr(term)
     to_print.append(S)
     S = str(S)
     lbl1 = f"a({i}) = "

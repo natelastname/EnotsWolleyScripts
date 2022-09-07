@@ -6,8 +6,6 @@ Created on Tue Sep  6 12:38:18 2022
 @author: nate
 """
 
-
-import re
 from tabulate import tabulate
 import bitlib as bl
 import factlib as fl

@@ -8,7 +8,7 @@ Created on Tue Aug 23 08:45:28 2022
 
 import primefac as pf
 import factlib as fl
-from tabulate import tabulate
+from print_table import compute_tbl_fmt
 
 
 cache = {1: 1, 2: 2}
@@ -42,9 +42,6 @@ def EKG(input_n):
         
 
 
-
-import sys
-from print_table import compute_tbl_fmt
 
 N = 250
 

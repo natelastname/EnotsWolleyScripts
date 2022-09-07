@@ -21,7 +21,7 @@ def factor(n):
         factors_dict[fact] = 1
         
     return factors_dict
-    
+ 
 
 def kernel(n):
     factors = [x for x in primefac.primefac(n)]
