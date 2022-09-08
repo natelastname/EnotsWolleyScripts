@@ -10,7 +10,6 @@ import re
 import primefac
 
 
-
 def factor(n):
     factors_dict = {}
     factors = [x for x in primefac.primefac(n)]

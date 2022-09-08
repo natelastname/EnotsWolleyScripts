@@ -14,10 +14,6 @@ from print_table import compute_tbl_fmt
 cache = {1: 1, 2: 2}
 found = {1: True, 2: True}
 
-def kernel(input_n):
-    factors = [x for x in pf.primefac(input_n)]
-    return set(factors)
-
 def EKG(input_n):
     global cache, found
     
@@ -25,13 +21,13 @@ def EKG(input_n):
         return cache[input_n]
     
     i = 3
-    ker_A = kernel(EKG(input_n - 1))
+    ker_A = fl.kernel(EKG(input_n - 1))
     while True:
         if i in found:
             i = i + 1
             continue
         
-        ker_B = kernel(i)
+        ker_B = fl.kernel(i)
         
         if len(ker_A.intersection(ker_B)) > 0:
             found[i] = True
