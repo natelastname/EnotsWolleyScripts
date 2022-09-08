@@ -5,8 +5,6 @@ Created on Tue Aug 23 08:45:28 2022
 
 @author: nate
 """
-
-import primefac as pf
 import factlib as fl
 from print_table import compute_tbl_fmt
 
