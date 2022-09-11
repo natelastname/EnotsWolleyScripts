@@ -18,7 +18,7 @@ def primefact_yellowstone(input_n):
     if input_n in cache:
         return cache[input_n]
     
-    i = 3
+    i = 4
     ker_A = fl.kernel(primefact_yellowstone(input_n - 1))
     ker_B = fl.kernel(primefact_yellowstone(input_n - 2))
 
