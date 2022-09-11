@@ -48,7 +48,7 @@ def primefact_enots(n):
 
 
 
-N = 50
+N = 250
 output = compute_tbl_fmt(primefact_enots, (1, N), "primefact") 
 print(output)
 
