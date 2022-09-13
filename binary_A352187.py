@@ -11,23 +11,21 @@ Compute A352200, the binary version of sequence A352187 and print the results
 as a human-readable table.
 '''
 import bitlib as bl
-from print_table import compute_tbl_fmt
 
 
 
 cache = {0: 0, 1: 1}
 found = {0: True, 1: True}
 
-def EKWolley(input_n):
+def binary_EKWolley(input_n):
     global cache, found
     
     if input_n in cache:
         return cache[input_n]
     
     i = 1
-    ker_A = bl.ker_int(EKWolley(input_n-1))
-    ker_B = bl.ker_int(EKWolley(input_n-2))
-
+    ker_A = bl.ker_int(binary_EKWolley(input_n-1))
+    ker_B = bl.ker_int(binary_EKWolley(input_n-2))
 
     while True:
         if i in found:
@@ -48,12 +46,9 @@ def EKWolley(input_n):
         
         i = i + 1
         
-
-N = 257
-output = compute_tbl_fmt(EKWolley, (1, N), "binary") 
-print(output)
-with open("./text_output/binary_A352187.txt","w") as fp:
-    fp.write(output)
-
     
+from print_table import gen_files_fmt
+N = 250
+gen_files_fmt(binary_EKWolley, "binary", "A352187", irange1=(1,N))
+
     

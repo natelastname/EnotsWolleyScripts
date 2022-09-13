@@ -18,8 +18,8 @@ The following files are for computing sequences. These are meant to be executed 
 - `natural_enots.py` - The Enots Wolley sequence. Effectively, this is a version of the Enots Wolley sequence where the value of `i`th digit is `i`. Currently, there is no OEIS page for this sequence. 
 - `primefact_EKG.py` - The original EKG sequence ([OEIS link](https://oeis.org/A064413))
 - `binary_EKG.py` - The binary analog of the EKG sequence ([OEIS link](https://oeis.org/A115510))
-- `primefact_yellowstone.py` - The original Yellowstone sequence ([OEIS link](https://oeis.org/A064413))
-- `binary_yellowstone.py` - The binary analog of the Yellowstone sequence ([OEIS link](https://oeis.org/A115510))
+- `primefact_yellowstone.py` - The original Yellowstone sequence ([OEIS link](https://oeis.org/A098550))
+- `binary_yellowstone.py` - The binary analog of the Yellowstone sequence ([OEIS link](https://oeis.org/A252867))
 - `primefact_A352187.py` - The sequence A352187 ([OEIS link](https://oeis.org/A352187)) 
 - `binary_A352187.py` - The binary analog of the sequence A352187 ([OEIS link](https://oeis.org/A352200)) 
 

@@ -36,14 +36,10 @@ def binary_EKG(input_n):
         i = i + 1
 
 
+
+from print_table import gen_files_fmt
 N = 257
-
-output = compute_tbl_fmt(binary_EKG, (1, N), "binary") 
-print(output)
-with open("./text_output/binary_EKG.txt","w") as fp:
-    fp.write(output)
-
-    
+gen_files_fmt(binary_EKG, "binary", "EKG", irange1=(1, N))
 
     
     

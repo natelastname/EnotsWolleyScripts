@@ -12,7 +12,6 @@ Created on Wed Sep  7 18:07:13 2022
 
 
 import factlib as fl
-from print_table import compute_tbl_fmt
 
 cache = {1: 1, 2: 2, 3: 6}
 found = {1: True, 2: True, 6: True}
@@ -47,11 +46,14 @@ def primefact_enots(n):
             return candidate
 
 
-
+from print_table import gen_files_fmt
 N = 250
-output = compute_tbl_fmt(primefact_enots, (1, N), "primefact") 
-print(output)
+gen_files_fmt(primefact_enots, "primefact", "enots", irange1=(1, N))
 
-with open("./text_output/primefact_enots.txt","w") as fp:
-    fp.write(output)
+
+
+
+
+
+
 

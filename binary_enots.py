@@ -10,19 +10,18 @@ Created on Sat May 14 12:09:12 2022
 '''
 
 import bitlib as bl
-from print_table import compute_tbl_fmt
 
 cache = {1: 1, 2: 3}
 found = {1: True, 3: True}
 
 
-def enots(n):
+def binary_enots(n):
     global cache, found
     if n in cache:
         return cache[n]
     
-    A = enots(n-1)
-    B = enots(n-2)
+    A = binary_enots(n-1)
+    B = binary_enots(n-2)
     ker_A = bl.ker_int(A)
     ker_B = bl.ker_int(B)
     
@@ -45,17 +44,11 @@ def enots(n):
             return candidate
 
 
+from print_table import gen_files_fmt
+gen_files_fmt(binary_enots, "binary", "enots")
 
 
 
-N = 100
-
-output = compute_tbl_fmt(enots, (1, N), "binary") 
-print(output)
-with open("./text_output/binary_enots.txt","w") as fp:
-    fp.write(output)
-
-    
     
     
 

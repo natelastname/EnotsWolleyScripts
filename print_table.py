@@ -9,7 +9,10 @@ Created on Tue Sep  6 12:38:18 2022
 from tabulate import tabulate
 import bitlib as bl
 import factlib as fl
-    
+import matplotlib.pyplot as plt
+
+
+
 def compute_tbl_binary(eval_fn, i_range, fmt):
     rows = []
     start_i = i_range[0]
@@ -74,10 +77,57 @@ def compute_tbl_fmt(eval_fn, i_range, fmt):
 
 
 
+def gen_files_fmt(eval_fn, fmt, name, irange1=(1,250), irange2=(1,250), write_files=True):
+    '''
+        A standardized function for generating output files for each of the
+        sequence.
+    
+        eval_fn: function that returns the ith term of the sequence
+        fmt: String, the format to generate the table in
+        name: String, the name of the sequence (for use in the file name)
+        irange1: range to generate the formatted table in
+        irange2: range to generate the list of terms in
+    '''
+    output1 = compute_tbl_fmt(eval_fn, irange1, fmt) 
+    print(output1)
+    
+    
+    if write_files == False:
+        return
+    
+    
+    with open(f"./text_output/{fmt}_{name}.txt","w") as fp:
+        fp.write(output1+"\n")
+        
+        
+        
+    
+        
+        
 
 
 
 
+
+def plot_fn_scatter(eval_fn, N):
+    '''
+    A small wrapper to plot an integer function with decent settings
+    '''
+    x = []
+    y = []
+    N = 1024
+    for i in range(1,N):
+        x.append(i)   
+        term = eval_fn(i)   
+        resid = term - i   
+        y.append(resid)
+        
+        
+    fig, (ax1, ax2) = plt.subplots(1, 2, constrained_layout=True, sharey=True)
+    ax1.scatter(x, y, s=0.5)
+    ax2.stem(x, y, markerfmt="None", basefmt="C0-")
+    
+    plt.show()
 
 
 

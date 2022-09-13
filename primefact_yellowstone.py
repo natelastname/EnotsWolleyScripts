@@ -38,13 +38,10 @@ def primefact_yellowstone(input_n):
             return i
         
         i = i + 1
-        
 
 
 
+    
+from print_table import gen_files_fmt
 N = 250
-
-output = compute_tbl_fmt(primefact_yellowstone, (1, N), "primefact") 
-print(output)
-with open("./text_output/primefact_yellowstone.txt","w") as fp:
-    fp.write(output)
+gen_files_fmt(primefact_yellowstone, "primefact", "yellowstone", irange1=(1, N))

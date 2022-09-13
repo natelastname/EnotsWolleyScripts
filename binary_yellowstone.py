@@ -8,8 +8,11 @@ Created on Wed Sep  7 19:37:30 2022
 import bitlib as bl
 from print_table import compute_tbl_fmt
 
-cache = {1: 1, 2: 2}
-found = {1: True, 2: True}
+
+from cached_sequence import *
+
+cache = {0: 0, 1: 1, 2: 2}
+found = {0: True, 1: True, 2: True}
 
 
 def binary_yellowstone(n):
@@ -40,14 +43,15 @@ def binary_yellowstone(n):
             return candidate
 
 
-
-
-
-
-
-N = 250
-
-output = compute_tbl_fmt(binary_yellowstone, (1, N), "binary") 
-print(output)
-with open("./text_output/binary_yellowstone.txt","w") as fp:
-    fp.write(output)
+from print_table import gen_files_fmt
+N = 257
+gen_files_fmt(binary_yellowstone, "binary", "yellowstone", irange1=(0, N))
+    
+    
+    
+    
+    
+    
+    
+    
+    

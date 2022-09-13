@@ -47,11 +47,18 @@ def primefact_EKWolley(input_n):
         i = i + 1
         
     
-N = 250
-output = compute_tbl_fmt(primefact_EKWolley, (1, N), "primefact") 
-print(output)
-with open("./text_output/primefact_A352187.txt","w") as fp:
-    fp.write(output)
 
+from print_table import gen_files_fmt
+N = 250
+gen_files_fmt(primefact_EKWolley, "primefact", "A352187", irange1=(1, N))
     
+
+
+
+
+
+
+
+
+
     
