@@ -8,6 +8,8 @@ Created on Mon Sep 12 18:24:54 2022
 
 import sqlite3
 from progbar import Progbar
+import print_table
+import settings 
 
 class table_generator:
     '''
@@ -95,8 +97,11 @@ class YellowstoneLikeSequence:
         changes that you made to the implementation taking effect.
         
     '''    
-    def __init__(self, filename : str, initial_vals : dict, recompute=False):
-        self.recompute = recompute
+    def __init__(self, filename : str, initial_vals : dict, recompute=None):
+        if recompute == None:
+            self.recompute = settings.RECOMPUTE_MODE
+        else:    
+            self.recompute = recompute
         
         if self.recompute:
             self.fwd = {}
@@ -169,7 +174,7 @@ class YellowstoneLikeSequence:
         x = []
         y = []
         for i in range(1, N):
-            prog.update(i)
+            prog.update(i+1)
             term = self.eval_seq(i)
             x.append(i)
             y.append(term)
@@ -181,6 +186,10 @@ class YellowstoneLikeSequence:
         
         return (x, y)
             
+    
+    def gen_tbl(self, irange, write_files=True):    
+        print_table.gen_tbl_fmt(self.eval_seq, self.format, self.name, irange)
+
         
     
 ###############################################################################

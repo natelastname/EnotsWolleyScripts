@@ -10,25 +10,35 @@ Created on Thu Aug 25 09:11:33 2022
 Compute A352200, the binary version of sequence A352187 and print the results
 as a human-readable table.
 '''
+
 import bitlib as bl
+import factlib as fl
+import settings
+
 from cached_sequence import YellowstoneLikeSequence
 
-class binary_EKWolley(YellowstoneLikeSequence):
+class EKWolley(YellowstoneLikeSequence):
     
-    def __init__(self, recompute=False):
-        super().__init__("./cache_dbs/binary_EKWolley.db", {0: 0, 1: 1}, recompute=recompute)
+    def __init__(self, supp_func, initial_vals, fmt, recompute=None):
+        self.supp_func = supp_func
+        self.name = "EKWolley"
+        self.format = fmt
+        self.supp_func = supp_func
+        super().__init__(f"./cache_dbs/{self.format}_{self.name}.db",
+             initial_vals, 
+             recompute=recompute)
 
     def _eval_seq(self, input_n):
         i = 1
-        ker_A = bl.ker_int(self.eval_seq(input_n-1))
-        ker_B = bl.ker_int(self.eval_seq(input_n-2))
+        ker_A = self.supp_func(self.eval_seq(input_n-1))
+        ker_B = self.supp_func(self.eval_seq(input_n-2))
     
         while True:
             if i in self.inv and self.inv[i] < input_n:
                 i = i + 1
                 continue
             
-            ker_I = bl.ker_int(i)
+            ker_I = self.supp_func(i)
             cond_A = len(ker_I.intersection(ker_A)) > 0
             cond_B = len(ker_I.intersection(ker_B)) == 0
             
@@ -41,11 +51,10 @@ class binary_EKWolley(YellowstoneLikeSequence):
             i = i + 1
 
     
+binary_ekw = EKWolley(bl.ker_int, {1: 0, 2: 1}, "binary")
+primefact_ekw = EKWolley(fl.kernel, {1: 1, 2: 2}, "primefact")
 
-from print_table import gen_tbl_fmt
-bEKW = binary_EKWolley(recompute=False)
 
-(x, y) = bEKW.compute_table(2000)
-gen_tbl_fmt(bEKW.eval_seq, "binary", "EKWolley", irange1=(0,250))
+binary_ekw.gen_tbl((1, settings.TABLE_N))
+primefact_ekw.gen_tbl((1, settings.TABLE_N))
 
-    

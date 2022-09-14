@@ -77,7 +77,7 @@ def compute_tbl_fmt(eval_fn, i_range, fmt):
 
 
 
-def gen_tbl_fmt(eval_fn, fmt, name, irange1=(1,250), irange2=(1,250), write_files=True):
+def gen_tbl_fmt(eval_fn, fmt, name, irange, write_files=True):
     '''
         A standardized function for generating formatted tables for each of the
         sequences in this project.
@@ -88,13 +88,13 @@ def gen_tbl_fmt(eval_fn, fmt, name, irange1=(1,250), irange2=(1,250), write_file
         irange1: range to generate the formatted table in
         irange2: range to generate the list of terms in
     '''
-    output1 = compute_tbl_fmt(eval_fn, irange1, fmt) 
+    output1 = compute_tbl_fmt(eval_fn, irange, fmt) 
+    print(f"========== {fmt}_{name}.txt ============")
     print(output1)
     
     
     if write_files == False:
         return
-    
     
     with open(f"./text_output/{fmt}_{name}.txt","w") as fp:
         fp.write(output1+"\n")

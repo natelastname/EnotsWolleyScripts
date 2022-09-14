@@ -1,2 +1,2 @@
 # -*- mode: gitignore; -*-
-./cache_dbs/*
+cache_dbs/*
