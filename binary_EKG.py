@@ -5,42 +5,41 @@ Created on Tue Aug 23 10:26:17 2022
 
 @author: nate
 """
+'''
+Compute A115510, the binary EKG sequence (A064413)
+'''
+
 import bitlib as bl
-from print_table import compute_tbl_fmt
+from cached_sequence import YellowstoneLikeSequence
 
-
-cache = {1: 1}
-found = {1: True}
-
-def binary_EKG(input_n):
-    global cache, found
+class binary_EKG(YellowstoneLikeSequence):
     
-    if input_n in cache:
-        return cache[input_n]
-    
-    i = 1
-    ker_A = bl.ker_int(binary_EKG(input_n-1))
+    def __init__(self, recompute=False):
+        super().__init__("./cache_dbs/binary_EKG.db", {1: 1}, recompute=recompute)
 
-    while True:
-        if i in found:
+    def _eval_seq(self, input_n):
+        i = 1
+        ker_A = bl.ker_int(self.eval_seq(input_n-1))
+    
+        while True:
+            if i in self.inv and self.inv[i] < input_n:
+                i = i + 1
+                continue
+            
+            ker_I = bl.ker_int(i)
+            
+            if len(ker_I.intersection(ker_A)) > 0:
+                return i
+
             i = i + 1
-            continue
-        
-        ker_B = bl.ker_int(i)
-        
-        if len(ker_A.intersection(ker_B)) > 0:
-            found[i] = True
-            cache[input_n] = i
-            return i
-        
-        i = i + 1
-
-
-
-from print_table import gen_files_fmt
-N = 257
-gen_files_fmt(binary_EKG, "binary", "EKG", irange1=(1, N))
 
     
-    
-    
+
+from print_table import gen_tbl_fmt
+bEKG = binary_EKG(recompute=True)
+
+(x, y) = bEKG.compute_table(2000)
+gen_tbl_fmt(bEKG.eval_seq, "binary", "EKG", irange1=(1,250))
+
+import sys 
+sys.exit(0)

@@ -6,49 +6,44 @@ Created on Sat May 14 12:09:12 2022
 @author: nate
 """
 '''
-    Computes the binary Enots Wolley sequence
+    Computes the binary Enots Wolley sequence A338833
 '''
 
+
+
 import bitlib as bl
+from cached_sequence import YellowstoneLikeSequence
 
-cache = {1: 1, 2: 3}
-found = {1: True, 3: True}
-
-
-def binary_enots(n):
-    global cache, found
-    if n in cache:
-        return cache[n]
+class binary_enots(YellowstoneLikeSequence):
     
-    A = binary_enots(n-1)
-    B = binary_enots(n-2)
-    ker_A = bl.ker_int(A)
-    ker_B = bl.ker_int(B)
-    
-    candidate = 1
-    while True:
-        candidate = candidate + 1
+    def __init__(self, recompute=False):
+        super().__init__("./cache_dbs/binary_enots.db", {1: 1, 2: 3}, recompute=recompute)
 
-        if candidate in found:
-            continue
+    def _eval_seq(self, input_n):
+        i = 1
+        ker_A = bl.ker_int(self.eval_seq(input_n-1))
+        ker_B = bl.ker_int(self.eval_seq(input_n-2))
 
-        ker_C = bl.ker_int(candidate)
+        while True:
+            if i in self.inv and self.inv[i] < input_n:
+                i = i + 1
+                continue
+            
+            ker_I = bl.ker_int(i)
+            
+            prop1 = len(ker_A.intersection(ker_I)) > 0
+            prop2 = len(ker_B.intersection(ker_I)) == 0
+            prop3 = ker_I.issubset(ker_A) == False
         
-        prop1 = len(ker_C.intersection(ker_A)) > 0
-        prop2 = len(ker_C.intersection(ker_B)) == 0
-        prop3 = len(ker_C - ker_A) > 0
-        
-        if prop1 and prop2 and prop3:
-            cache[n] = candidate
-            found[candidate] = True
-            return candidate
+            if prop1 and prop2 and prop3:
+                return i
 
-
-from print_table import gen_files_fmt
-gen_files_fmt(binary_enots, "binary", "enots")
-
-
+            i = i + 1
 
     
-    
+
+from print_table import gen_tbl_fmt
+b_enots = binary_enots(recompute=True)
+#(x, y) = b_enots.compute_table(2000)
+gen_tbl_fmt(b_enots.eval_seq, "binary", "enots", irange1=(1,250))
 

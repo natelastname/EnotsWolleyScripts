@@ -9,51 +9,40 @@ Created on Wed Sep  7 18:07:13 2022
     Generate a table of formatted terms of the Enots Wolley sequence (A336957)
 '''
 
-
-
 import factlib as fl
+from cached_sequence import YellowstoneLikeSequence
 
-cache = {1: 1, 2: 2, 3: 6}
-found = {1: True, 2: True, 6: True}
-
-
-def primefact_enots(n):    
-    global cache, found
-    if n in cache:
-        return cache[n]
+class binary_enots(YellowstoneLikeSequence):
     
-    A = primefact_enots(n-1)
-    B = primefact_enots(n-2)
-    ker_A = fl.kernel(A)
-    ker_B = fl.kernel(B)
+    def __init__(self, recompute=False):
+        super().__init__("./cache_dbs/primefact_enots.db", {1: 1, 2: 2}, recompute=recompute)
+
+    def _eval_seq(self, input_n):
+        i = 1
+        ker_A = fl.kernel(self.eval_seq(input_n-1))
+        ker_B = fl.kernel(self.eval_seq(input_n-2))
+
+        while True:
+            if i in self.inv and self.inv[i] < input_n:
+                i = i + 1
+                continue
+            
+            ker_I = fl.kernel(i)
+            
+            prop1 = len(ker_A.intersection(ker_I)) > 0
+            prop2 = len(ker_B.intersection(ker_I)) == 0
+            prop3 = ker_I.issubset(ker_A) == False
+        
+            if prop1 and prop2 and prop3:
+                return i
+
+            i = i + 1
+
     
-    candidate = 1
-    while True:
-        candidate = candidate + 1
 
-        if candidate in found:
-            continue
-
-        ker_C = fl.kernel(candidate)
-        
-        prop1 = len(ker_C.intersection(ker_A)) > 0
-        prop2 = len(ker_C.intersection(ker_B)) == 0
-        prop3 = len(ker_C - ker_A) > 0
-        
-        if prop1 and prop2 and prop3:
-            cache[n] = candidate
-            found[candidate] = True
-            return candidate
-
-
-from print_table import gen_files_fmt
-N = 250
-gen_files_fmt(primefact_enots, "primefact", "enots", irange1=(1, N))
-
-
-
-
-
-
+from print_table import gen_tbl_fmt
+b_enots = binary_enots(recompute=True)
+#(x, y) = b_enots.compute_table(2000)
+gen_tbl_fmt(b_enots.eval_seq, "primefact", "enots", irange1=(1,250))
 
 

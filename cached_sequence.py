@@ -16,7 +16,8 @@ class table_generator:
    
     Uses sqlite3 as a key-value store.
     
-    Stores everything in memory until you call table_generator.commit()
+    Stores everything in a dict until you call table_generator.commit(), which
+    writes the dict to a database.
     
     '''
     def __init__(self, filename: str, tbl_name : str = "cache"):
@@ -67,6 +68,19 @@ class table_generator:
         
         self.conn.commit()
 
+    def get_min_uncomputed(self):
+        '''
+        Return the minimum integer which is not yet stored.
+        This is currently unused because there are more efficient ways to skip
+        gaps.
+        '''
+        res = self.conn.execute(f"SELECT MIN(key) + 1 FROM {self.tbl_name} WHERE key + 1 NOT IN (SELECT key FROM {self.tbl_name})")
+        res = res.fetchone()[0]
+        
+        if res == None:
+            return 0
+        
+        return res
 
 
 class YellowstoneLikeSequence:
@@ -75,11 +89,22 @@ class YellowstoneLikeSequence:
         
         Beware cache invalidation. I.e., this does not behave well when you are 
         changing the implementation of the underlying function.
+        
+        If recompute=True, it won't load from or store anything in the DB. 
+        Values will still be cached in a dictionary, but you can rely on any 
+        changes that you made to the implementation taking effect.
+        
     '''    
-    def __init__(self, filename : str, initial_vals : dict):
-        self.fwd = table_generator(filename, "fwd")
-        self.inv = table_generator(filename, "inv")
-
+    def __init__(self, filename : str, initial_vals : dict, recompute=False):
+        self.recompute = recompute
+        
+        if self.recompute:
+            self.fwd = {}
+            self.inv = {}
+        else:
+            self.fwd = table_generator(filename, "fwd")
+            self.inv = table_generator(filename, "inv")
+        
         for key in initial_vals:
             val = initial_vals[key]
             self.fwd[key] = val
@@ -89,6 +114,9 @@ class YellowstoneLikeSequence:
         '''
         Write the current cache to disk.
         '''
+        if self.recompute:
+            return
+        
         self.fwd.commit()
         self.inv.commit()
 
@@ -107,26 +135,48 @@ class YellowstoneLikeSequence:
         
         return value_i
 
-    def _eval_seq(self, input_i):
+    def check_if_candidate(self, number : int, term_num : int):
         '''
-        Implement your function here.
+            Check if the integer "number" is a candidate for the (term_num)-th 
+            term. Remember that the definition of "candidate" does not require 
+            that the number be unused nor minimal; these properties are handled
+            by the other parts of the class.
         '''
-        return -1
+        pass
+
+
+    def _eval_seq(self, term_no):
+        '''
+            Compute values of the sequence without worrying about caching.
+        '''
+        number = 0
+        while True:
+            number = number + 1
+    
+            if number in self.inv and self.inv[number] <= term_no:
+                # skip number if it occurs previously in the sequence.
+                continue
+    
+            if self.check_if_candidate(number, term_no) == True:
+                return number
     
     def compute_table(self, N):
+        '''
+        Compute a (potentially large) number of values of the sequence, 
+        incrementally saving computed values to disc.
+        '''
         prog = Progbar(target=N)
-
         x = []
         y = []
         for i in range(1, N):
-            prog.update(i+1)
+            prog.update(i)
             term = self.eval_seq(i)
             x.append(i)
             y.append(term)
             
             if i % 1000 == 0:
                 self.commit()
-                
+            
         self.commit()
         
         return (x, y)
@@ -135,62 +185,24 @@ class YellowstoneLikeSequence:
     
 ###############################################################################
 
-    
-
 class natural_numbers(YellowstoneLikeSequence):
     '''
     The natural numbers 0, 1, 2, 3, ... implemented as a 
-    YellowstoneLikeSequence (for testing purposes.)
+    YellowstoneLikeSequence (for testing/example purposes.)
     '''
-    def __init__(self):
-        super().__init__("./cache_dbs/nat.db", {0: 0})
+    def __init__(self, recompute=False):
+        super().__init__("./cache_dbs/nat.db", {0: 0}, recompute=recompute)
 
-    def _eval_seq(self, input_i):        
+    def _eval_seq(self, input_i):
+        '''
+        You can either implement the method check_if_candidate, or you can
+        directly write whatever you need to do to compute the ith term here.
+        '''
         value = self.eval_seq(input_i - 1) + 1
         return value
             
     
-nat = natural_numbers()
-nat.eval_seq(10)
+#nat = natural_numbers()
+#nat.eval_seq(10)
 
-###############################################################################
-
-import bitlib as bl
-
-class binary_yellowstone(YellowstoneLikeSequence):
-    
-    def __init__(self):
-        super().__init__("./cache_dbs/binary_yellowstone.db", {0: 0, 1: 1, 2: 2})
-
-
-    def _eval_seq(self, input_i):   
-        A = self.eval_seq(input_i-1)
-        B = self.eval_seq(input_i-2)
-        ker_A = bl.ker_int(A)
-        ker_B = bl.ker_int(B)
-        
-        candidate = 1
-        while True:
-            candidate = candidate + 1
-    
-            if candidate in self.inv:
-                continue
-    
-            ker_candidate = bl.ker_int(candidate)
-            
-            prop1 = len(ker_candidate.intersection(ker_B)) > 0
-            prop2 = len(ker_candidate.intersection(ker_A)) == 0
-            
-            if prop1 and prop2:
-                return candidate
-    
-
-    
-    
-bys = binary_yellowstone()
-bys.eval_seq(40)
-
-bys.compute_table(100000)
-    
-    
     

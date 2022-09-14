@@ -5,39 +5,39 @@ Created on Tue Aug 23 08:45:28 2022
 
 @author: nate
 """
+
+
 import factlib as fl
+from cached_sequence import YellowstoneLikeSequence
 
-cache = {1: 1, 2: 2}
-found = {1: True, 2: True}
+class primefact_EKG(YellowstoneLikeSequence):
+    
+    def __init__(self, recompute=False):
+        super().__init__("./cache_dbs/primefact_EKG.db", {1: 1, 2:2}, recompute=recompute)
 
-def primefact_EKG(input_n):
-    global cache, found
+    def _eval_seq(self, input_n):
+        i = 1
+        ker_A = fl.kernel(self.eval_seq(input_n-1))
     
-    if input_n in cache:
-        return cache[input_n]
-    
-    i = 3
-    ker_A = fl.kernel(primefact_EKG(input_n - 1))
-    while True:
-        if i in found:
+        while True:
+            if i in self.inv and self.inv[i] < input_n:
+                i = i + 1
+                continue
+            
+            ker_I = fl.kernel(i)
+            
+            if len(ker_I.intersection(ker_A)) > 0:
+                return i
+
             i = i + 1
-            continue
-        
-        ker_B = fl.kernel(i)
-        
-        if len(ker_A.intersection(ker_B)) > 0:
-            found[i] = True
-            cache[input_n] = i
-            return i
-        
-        i = i + 1
+
     
 
-from print_table import gen_files_fmt
-N = 250
-gen_files_fmt(primefact_EKG, "primefact", "EKG", irange1=(1, N))
+from print_table import gen_tbl_fmt
+pf_EKG = primefact_EKG(recompute=True)
 
-
+#(x, y) = pf_EKG.compute_table(2000)
+gen_tbl_fmt(pf_EKG.eval_seq, "primefact", "EKG", irange1=(1,250))
 
 
 

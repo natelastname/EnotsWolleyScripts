@@ -77,10 +77,10 @@ def compute_tbl_fmt(eval_fn, i_range, fmt):
 
 
 
-def gen_files_fmt(eval_fn, fmt, name, irange1=(1,250), irange2=(1,250), write_files=True):
+def gen_tbl_fmt(eval_fn, fmt, name, irange1=(1,250), irange2=(1,250), write_files=True):
     '''
-        A standardized function for generating output files for each of the
-        sequence.
+        A standardized function for generating formatted tables for each of the
+        sequences in this project.
     
         eval_fn: function that returns the ith term of the sequence
         fmt: String, the format to generate the table in
