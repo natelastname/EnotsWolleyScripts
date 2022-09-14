@@ -12,10 +12,10 @@ import bitlib as bl
 import factlib as fl
 import matplotlib.pyplot as plt
 
-import EKG
-import EKWolley as EKW
-import Enots
-import Yellowstone as YS
+import sequences.EKG
+import sequences.EKWolley as EKW
+import sequences.Enots
+import sequences.Yellowstone as YS
 
 
 N = 5000
