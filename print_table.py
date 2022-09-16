@@ -10,7 +10,24 @@ from tabulate import tabulate
 import bitlib as bl
 import factlib as fl
 import matplotlib.pyplot as plt
+import re
 
+
+def pad_first_row(first_row):
+    
+    
+    padded = []
+    M = max(map(lambda x: len(str(x)), first_row))
+    print(M)
+    for i in range(0, len(first_row)):
+        x = str(first_row[i])
+        x_pad = f"{x:{M}}"
+        x_pad = re.sub(" ", "-", x_pad)
+        padded.append(x_pad)
+        
+    
+    print(padded)
+    return padded
 
 
 def compute_tbl_binary(eval_fn, i_range, fmt):
@@ -28,7 +45,9 @@ def compute_tbl_binary(eval_fn, i_range, fmt):
         rows.append(row)
     
     num_cols = max(list(map(lambda x: len(x), rows))) - 1
-    rows.insert(0, [" "] +[" "] + [2**i for i in range(0, num_cols)])
+    first_row = [" "] +[" "] + [2**i for i in range(0, num_cols)]
+    first_row = pad_first_row(first_row)
+    rows.insert(0, first_row)
     output = tabulate(rows)
     return output
 
@@ -56,8 +75,10 @@ def compute_tbl_primefact(eval_fn, i_range, fmt):
         rows.append([lbl1] + [lbl2] + fact_arr)
     
     
-    
-    rows.insert(0, [" "] + [" "] + fl.first_n_primes(num_first_primes))
+    first_row = [" "] + [" "] + fl.first_n_primes(num_first_primes)
+    first_row = pad_first_row(first_row)
+
+    rows.insert(0, first_row)
 
     output = tabulate(rows)
     return output

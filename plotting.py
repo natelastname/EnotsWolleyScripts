@@ -12,9 +12,9 @@ import bitlib as bl
 import factlib as fl
 import matplotlib.pyplot as plt
 
-import sequences.EKG
+import sequences.EKG as EKG
 import sequences.EKWolley as EKW
-import sequences.Enots
+import sequences.Enots as Enots
 import sequences.Yellowstone as YS
 
 

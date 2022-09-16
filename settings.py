@@ -18,7 +18,7 @@ This settings is overriden by passing True or False to the argument "recompute"
 of YellowstoneLikeSequence.
 
 '''
-RECOMPUTE_MODE=False
+RECOMPUTE_MODE=True
 
 
 '''
