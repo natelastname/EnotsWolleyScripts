@@ -32,7 +32,7 @@ class BogusEnots(YellowstoneLikeSequence):
         term_no = 0
         while True:
             term_no += 1
-            yield 2**(term_no+1)
+            yield 2**(term_no)
             
         
 
@@ -78,15 +78,15 @@ class BogusEnots(YellowstoneLikeSequence):
         
         least_unfound_rk = 1
         
-        
         rank_to_int = {}
         
         G_skipped = self.skipped_obj_rks()
         G_unskipped = self.unskipped_obj_rks()
         
-        
-        
-        
+    
+        # Loop over natural numbers in order until we find the rank we are 
+        # looking for. An example of how NOT to implement this. It needs some 
+        # smarter way to search for the object of rank i.
         
         while True:
             term_i = term_i + 1
@@ -117,7 +117,7 @@ class BogusEnots(YellowstoneLikeSequence):
             if least_unfound_rk in rank_to_int:
                 yield rank_to_int[least_unfound_rk]
                 least_unfound_rk += 1
-                    
+
                 
                 
                 
@@ -154,7 +154,7 @@ class BogusEnots(YellowstoneLikeSequence):
 bogus_enots = BogusEnots(bl.ker_int, {1: 3, 2: 6}, "binary")
 G = bogus_enots.unskipped_obj_rks()
 G = bogus_enots.rank_order()
-for i in range(1, 20):
+for i in range(1, 10):
     term = next(G)
     print(f"{i}: {term}")
 
