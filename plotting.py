@@ -12,10 +12,11 @@ import bitlib as bl
 import factlib as fl
 import matplotlib.pyplot as plt
 
-import sequences.EKG as EKG
-import sequences.EKWolley as EKW
-import sequences.Enots as Enots
-import sequences.Yellowstone as YS
+import EKG
+import EKWolley
+import Enots
+import Yellowstone
+
 
 
 N = 5000
@@ -33,6 +34,7 @@ def scatter_plot(seq_obj : YellowstoneLikeSequence, i):
 plt.figure()
 scatter_plot(Enots.binary_enots, 1)
 scatter_plot(Enots.primefact_enots, 2)
+'''
 plt.figure()
 scatter_plot(EKW.binary_ekw, 1)
 scatter_plot(EKW.primefact_ekw, 2)
@@ -42,10 +44,7 @@ scatter_plot(EKG.primefact_ekg, 2)
 plt.figure()
 scatter_plot(YS.binary_ys, 1)
 scatter_plot(YS.primefact_ys, 2)
+'''
 
-
-
-import sys
-sys.exit(0)
 
 

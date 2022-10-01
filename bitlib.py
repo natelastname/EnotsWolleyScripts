@@ -10,6 +10,42 @@ import math
     
 
 
+def xor_bit_arr(A, B):
+    C = []
+    shorter = None
+    longer = None
+    if len(A) < len(B):
+        shorter = A
+        longer = B
+    else:
+        shorter = B 
+        longer = A
+    
+
+    for i in range(0, len(longer)):
+
+        if i < len(shorter):    
+            if longer[i] == shorter[i]:
+                C.append(0)
+            else:
+                C.append(1)
+        else:
+            C.append(longer[i])
+
+
+
+    # remove trailing zeroes if any
+    while C[-1] == 0:
+        C = C[:-1]    
+        if C == []:
+            return [0]
+        
+    return C
+
+        
+#print(xor_bit_arr([1,1], [1,1]))
+        
+
 def ker_int(n_int):
     bits = int_to_bit_arr(n_int)
     indices = []
@@ -63,6 +99,8 @@ def int_to_bit_arr(n_int):
     if n_arr[-1] == 0:
         return n_arr[0:-1]
     return n_arr
+
+
 
 '''
     n_arr[0] is the ones digit.    

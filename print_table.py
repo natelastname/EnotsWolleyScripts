@@ -26,7 +26,7 @@ def pad_first_row(first_row):
         padded.append(x_pad)
         
     
-    print(padded)
+    #print(padded)
     return padded
 
 

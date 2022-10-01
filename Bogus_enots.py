@@ -67,56 +67,34 @@ class BogusEnots(YellowstoneLikeSequence):
         
         return True
 
+
+
+    def get_obj_by_rank(self, rank):
+        
+        # Is this the rank of a skipped number?
+        ker_rank = bl.ker_int(rank)
+        
+        
+        if len(ker_rank) == 1:
+             skipped_index = list(ker_rank)[0]
+             
+             
+             # 9 has rank 8, so it is the third skipped number
+             # there are 2log=6 excluded objects below 9
+             
+             # skipped_below_i + unskipped_below_i = i - math.floor(log_2(i))
+        
+            
+            
+            
+
     def rank_order(self):
         '''
         Generator for enumerating the natural numbers in order of rank.
         '''
-        num_skipped = 0
-        num_hit = 0
-        term_i = 0
-        
-        
-        least_unfound_rk = 1
-        
-        rank_to_int = {}
-        
-        G_skipped = self.skipped_obj_rks()
-        G_unskipped = self.unskipped_obj_rks()
-        
-    
-        # Loop over natural numbers in order until we find the rank we are 
-        # looking for. An example of how NOT to implement this. It needs some 
-        # smarter way to search for the object of rank i.
-        
-        while True:
-            term_i = term_i + 1
-            rank_i = None
-            
-            if len(bl.ker_int(term_i)) == 1:
-                # Term has no rank because it technically isn't an object.
-                continue
-            
-            if self.is_obj_skipped(term_i):
-                # Term is unskipped.
-                num_hit += 1
-                rank_i = next(G_skipped)
-                rank_to_int[rank_i] = {
-                        "obj": term_i,
-                        "rank": rank_i,
-                        "skipped": True
-                        }
-            else:
-                num_skipped += 1
-                rank_i = next(G_unskipped)
-                rank_to_int[rank_i] = {
-                        "obj": term_i,
-                        "rank": rank_i,
-                        "skipped": False
-                        }
-                
-            if least_unfound_rk in rank_to_int:
-                yield rank_to_int[least_unfound_rk]
-                least_unfound_rk += 1
+        current_rank = 1        
+        while True:            
+            yield self.get_obj_by_rank(current_rank)
 
                 
                 

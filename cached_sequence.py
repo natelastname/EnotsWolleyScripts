@@ -97,7 +97,9 @@ class YellowstoneLikeSequence:
         changes that you made to the implementation taking effect.
         
     '''    
-    def __init__(self, filename : str, initial_vals : dict, recompute=None):
+    def __init__(self, filename : str, 
+                 initial_vals : dict, 
+                 recompute=None):
         if recompute == None:
             self.recompute = settings.RECOMPUTE_MODE
         else:    
@@ -140,6 +142,7 @@ class YellowstoneLikeSequence:
         
         return value_i
 
+
     def check_if_candidate(self, number : int, term_num : int):
         '''
             Check if the integer "number" is a candidate for the (term_num)-th 
@@ -153,6 +156,8 @@ class YellowstoneLikeSequence:
     def _eval_seq(self, term_no):
         '''
             Compute values of the sequence without worrying about caching.
+            Unless this is overridden, this calls self.check_if_candidate to 
+            compute the next term (I.e., it uses the O(n^2) algorithm)
         '''
         number = 0
         while True:
